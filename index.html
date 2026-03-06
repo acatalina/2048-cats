@@ -22,49 +22,86 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
-  html, body { overflow:hidden; overscroll-behavior:none; touch-action:none; }
+  html, body { width:100%; height:100%; margin:0; padding:0; }
+  body { touch-action:none; overscroll-behavior:none; }
+  .game-wrap {
+    width:100%; height:100%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:16px; box-sizing:border-box;
+  }
   body {
     font-family: 'Nunito', sans-serif;
-    background: #fdf0e0;
+    background: #fef6fb;
     min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 16px;
     background-image:
-      radial-gradient(ellipse at 15% 15%, #ffe8d0 0%, transparent 55%),
-      radial-gradient(ellipse at 85% 85%, #ffd6e8 0%, transparent 55%);
+      radial-gradient(ellipse at 10% 10%, #fce4f5 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 90%, #e4eeff 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, #fff0fa 0%, transparent 70%);
   }
-  h1 { font-size:2.4rem; font-weight:900; color:#4a3020; letter-spacing:-1px; margin-bottom:2px; text-shadow:2px 2px 0 rgba(120,60,20,.12); }
-  .sub { color:#9a7060; font-size:.9rem; font-weight:700; margin-bottom:14px; }
-  .top-bar { display:flex; gap:10px; align-items:center; margin-bottom:14px; width:100%; max-width:390px; justify-content:space-between; }
-  .score-box { background:#4a3020; color:#fff; border-radius:12px; padding:6px 16px; text-align:center; min-width:80px; }
-  .score-box .lbl { font-size:.6rem; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; opacity:.6; }
-  .score-box .val { font-size:1.3rem; font-weight:900; }
-  .btn { background:#ff6b4a; color:#fff; border:none; border-radius:12px; padding:9px 20px;
-         font-family:'Nunito',sans-serif; font-weight:900; font-size:.95rem; cursor:pointer;
-         box-shadow:0 4px 0 #c94030; transition:transform .1s,box-shadow .1s; }
-  .btn:hover { transform:translateY(-2px); box-shadow:0 6px 0 #c94030; }
-  .btn:active { transform:translateY(2px); box-shadow:0 2px 0 #c94030; }
-  #sound-btn { padding:9px 14px; font-size:1.1rem; }
+  h1 { font-size:2rem; font-weight:900; color:#a0527a; letter-spacing:-1px; line-height:1; text-shadow:2px 3px 0 rgba(200,120,180,.18); }
+  .sub { color:#c48aaa; font-size:.78rem; font-weight:700; margin-top:3px; }
+  .header {
+    display:grid; grid-template-columns:1fr 1fr;
+    width:100%; max-width:390px;
+    margin-bottom:12px; gap:10px;
+  }
+  .header-title { display:flex; flex-direction:column; justify-content:center; }
+  .header-right { display:flex; flex-direction:column; gap:7px; }
+  .scores-row { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .btns-row { display:flex; gap:6px; justify-content:flex-end; }
+  .score-box {
+    background:linear-gradient(135deg,#f5d0ea,#e8d5f8);
+    color:#a0527a; border-radius:12px; padding:5px 8px;
+    text-align:center;
+    box-shadow:0 2px 0 #d4a0c8, inset 0 1px 2px rgba(255,255,255,.7);
+  }
+  .score-box .lbl { font-size:.55rem; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; opacity:.65; }
+  .score-box .val { font-size:1.1rem; font-weight:900; line-height:1.2; }
+  .btns-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; }
+  .btn {
+    background:linear-gradient(135deg,#f9a8d4,#e879a0); color:#fff; border:none; border-radius:12px; padding:10px 8px;
+    font-family:'Nunito',sans-serif; font-weight:900; font-size:.88rem; cursor:pointer;
+    box-shadow:0 3px 0 #c0507a; transition:transform .1s,box-shadow .1s;
+    width:100%;
+  }
+  .btn:hover { transform:translateY(-2px); box-shadow:0 5px 0 #c0507a; }
+  .btn:active { transform:translateY(2px); box-shadow:0 1px 0 #c0507a; }
+  #sound-btn { padding:10px 8px; font-size:.88rem; background:linear-gradient(135deg,#c7d2fe,#a5b4fc); box-shadow:0 3px 0 #7080d0; }
+  #sound-btn:hover { box-shadow:0 5px 0 #7080d0; }
+  #sound-btn:active { box-shadow:0 1px 0 #7080d0; }
+  .hint { margin-top:14px; font-size:1.6rem; font-weight:700; text-align:center; }
+  .hint a { color:#c084fc; text-decoration:none; border-bottom:2px dotted #c084fc; transition:color .15s; }
+  .hint a:hover { color:#a0527a; border-color:#a0527a; }
+
+  #tutorial, #cat-unlock {
+    transform: none; /* Ensure fixed positioning isn't broken by parent transforms */
+  }
+  #paw-bg {
+    position:fixed; inset:0; width:100%; height:100%;
+    pointer-events:none; z-index:0; opacity:1;
+  }
+  .game-wrap { position:relative; z-index:1; }
+
   .board-wrap { position:relative; width:390px; max-width:96vw; }
   .board {
-    background:#dcc8a8; border-radius:18px; padding:9px;
+    background:linear-gradient(135deg,#f0d6ef,#ddc6f0); border-radius:22px; padding:9px;
     display:grid; grid-template-columns:repeat(4,1fr); gap:9px;
-    box-shadow:0 8px 30px rgba(100,60,20,.2), inset 0 2px 4px rgba(255,255,255,.4);
+    box-shadow:0 8px 30px rgba(160,80,140,.18), inset 0 2px 4px rgba(255,255,255,.6);
     position:relative;
   }
-  .cell-bg { background:#ecdbbf; border-radius:11px; aspect-ratio:1; box-shadow:inset 0 2px 5px rgba(100,60,20,.1); }
+  .cell-bg { background:rgba(255,255,255,.45); border-radius:13px; aspect-ratio:1; box-shadow:inset 0 2px 5px rgba(160,80,140,.08); }
   .tiles-layer { position:absolute; top:9px;left:9px;right:9px;bottom:9px; pointer-events:none; }
   .tile {
-    position:absolute; border-radius:11px;
-    background: #fff8f0;
+    position:absolute; border-radius:13px;
+    background: rgba(255,255,255,.85);
     transition:top .13s ease, left .13s ease;
     overflow:hidden;
-    box-shadow:0 4px 16px rgba(80,40,10,.22), inset 0 1px 3px rgba(255,255,255,.5);
+    box-shadow:0 4px 16px rgba(160,80,140,.18), inset 0 1px 3px rgba(255,255,255,.8);
   }
   .tile.legendary { animation: legendGlow 1.2s ease-in-out infinite alternate; }
   @keyframes legendGlow {
-    from { box-shadow: 0 0 14px 5px #ffd700, 0 4px 16px rgba(80,40,10,.22); }
-    to   { box-shadow: 0 0 32px 14px #ff9900, 0 4px 16px rgba(80,40,10,.22); }
+    from { box-shadow: 0 0 14px 5px #f9a8d4, 0 4px 16px rgba(160,80,140,.18); }
+    to   { box-shadow: 0 0 32px 14px #c084fc, 0 4px 16px rgba(160,80,140,.18); }
   }
   @keyframes pop {
     0%   { transform:scale(.3); opacity:0; }
@@ -80,22 +117,22 @@
   .tile.merged-tile { animation:merge-pop .2s ease; }
   .overlay {
     display:none; position:absolute; inset:0;
-    background:rgba(253,240,224,.92); border-radius:18px;
+    background:rgba(254,246,251,.92); border-radius:22px;
     flex-direction:column; align-items:center; justify-content:center;
     z-index:10; backdrop-filter:blur(6px);
   }
   .overlay.show { display:flex; }
-  .overlay-title { font-size:2rem; font-weight:900; color:#4a3020; margin-bottom:6px; }
-  .overlay-sub   { font-size:1rem; color:#9a7060; font-weight:700; margin-bottom:18px; }
-  .hint { margin-top:14px; font-size:.75rem; color:#b09070; font-weight:700; text-align:center; }
+  .overlay-title { font-size:2rem; font-weight:900; color:#a0527a; margin-bottom:6px; }
+  .overlay-sub   { font-size:1rem; color:#c48aaa; font-weight:700; margin-bottom:18px; }
 
   /* Cat unlock celebration */
   #cat-unlock {
     display:none; position:fixed; inset:0;
     z-index:100; align-items:center; justify-content:center;
     pointer-events:none;
+    background: rgba(120,60,100,.15); backdrop-filter:blur(6px);
   }
-  #cat-unlock.show { display:flex; }
+  #cat-unlock.show { display:flex; pointer-events:all; }
   #cat-unlock.hiding #cat-unlock-inner {
     animation: unlockFade .4s ease forwards;
   }
@@ -105,9 +142,9 @@
   }
   #cat-unlock-inner {
     position:relative;
-    background:#fff8f0;
+    background:linear-gradient(145deg,#fff0fb,#f0e8ff);
     border-radius:28px;
-    box-shadow: 0 12px 60px rgba(80,40,10,.28), 0 0 0 4px #f4a460;
+    box-shadow: 0 12px 60px rgba(160,80,140,.25), 0 0 0 3px #f9a8d4;
     padding: 28px 36px 24px;
     display:flex; flex-direction:column; align-items:center;
     animation: unlockPop .45s cubic-bezier(.17,.89,.32,1.4) forwards;
@@ -126,30 +163,160 @@
     from { transform: translateY(0px); }
     to   { transform: translateY(-8px); }
   }
-  #cat-unlock-title { font-size:1.5rem; font-weight:900; color:#4a3020; margin-bottom:4px; }
-  #cat-unlock-pun   { font-size:.95rem; font-weight:700; color:#f4a460; margin-bottom:6px; }
-  #cat-unlock-msg   { font-size:.85rem; color:#9a7060; font-weight:600; }
+  #cat-unlock-title { font-size:1.5rem; font-weight:900; color:#a0527a; margin-bottom:4px; }
+  #cat-unlock-pun   { font-size:.95rem; font-weight:700; color:#c084fc; margin-bottom:6px; }
+  #cat-unlock-msg   { font-size:.85rem; color:#c48aaa; font-weight:600; }
   #cat-unlock-close {
     position:absolute; top:10px; right:12px;
     background:none; border:none; cursor:pointer;
-    font-size:1.1rem; color:#b09070; font-weight:900;
+    font-size:1.1rem; color:#c48aaa; font-weight:900;
     width:28px; height:28px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
     line-height:1; padding:0;
     transition: background .15s, color .15s;
     pointer-events:all;
   }
-  #cat-unlock-close:hover { background:#f4a46033; color:#4a3020; }
+  #cat-unlock-close:hover { background:#f9a8d433; color:#a0527a; }
+
+  /* Tutorial overlay */
+  #tutorial {
+    display:none; position:fixed; inset:0;
+    z-index:200; align-items:center; justify-content:center;
+    background: rgba(120,60,100,.45); backdrop-filter:blur(6px);
+  }
+  #tutorial.show { display:flex; }
+  #tutorial.hiding #tutorial-inner {
+    animation: unlockFade .4s ease forwards;
+  }
+  #tutorial-inner {
+    position:relative;
+    background:linear-gradient(145deg,#fff0fb,#ede8ff);
+    border-radius:28px;
+    box-shadow: 0 16px 60px rgba(160,80,140,.3), 0 0 0 3px #f9a8d4;
+    padding: 32px 28px 26px;
+    max-width: 320px; width: 90%;
+    text-align:center;
+    opacity:0;
+  }
+  #tutorial.show #tutorial-inner {
+    animation: unlockPop .45s cubic-bezier(.17,.89,.32,1.4) forwards;
+  }
+  #tutorial-close {
+    position:absolute; top:10px; right:12px;
+    background:none; border:none; cursor:pointer;
+    font-size:1.1rem; color:#c48aaa; font-weight:900;
+    width:28px; height:28px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    line-height:1; padding:0;
+    transition: background .15s, color .15s;
+  }
+  #tutorial-close:hover { background:#f9a8d433; color:#a0527a; }
+  #tutorial h2 { font-size:1.6rem; font-weight:900; color:#a0527a; margin:0 0 4px; }
+  #tutorial .tut-tagline { font-size:.9rem; color:#c084fc; font-weight:700; margin-bottom:20px; }
+
+  /* Cat Collection Modal */
+  #cat-collection {
+    display:none; position:fixed; inset:0;
+    z-index:200; align-items:center; justify-content:center;
+    background: rgba(120,60,100,.45); backdrop-filter:blur(6px);
+  }
+  #cat-collection.show { display:flex; }
+  #cat-collection.hiding #cat-collection-inner {
+    animation: unlockFade .4s ease forwards;
+  }
+  #cat-collection-inner {
+    position:relative;
+    background:linear-gradient(145deg,#fff0fb,#ede8ff);
+    border-radius:28px;
+    box-shadow: 0 16px 60px rgba(160,80,140,.3), 0 0 0 3px #f9a8d4;
+    padding: 28px 20px 24px;
+    max-width: 420px; width: 94%;
+    max-height: 90vh;
+    overflow-y: auto;
+    text-align:center;
+  }
+  #cat-collection-inner h2 {
+    font-size:1.6rem; font-weight:900; color:#a0527a; margin:0 0 4px;
+  }
+  #cat-collection-inner .coll-tagline {
+    font-size:.85rem; color:#c084fc; font-weight:700; margin-bottom:16px;
+  }
+  #cat-collection-close {
+    position:absolute; top:10px; right:12px;
+    background:none; border:none; cursor:pointer;
+    font-size:1.1rem; color:#c48aaa; font-weight:900;
+    width:28px; height:28px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    line-height:1; padding:0;
+    transition: background .15s, color .15s;
+  }
+  #cat-collection-close:hover { background:#f9a8d433; color:#a0527a; }
+  .coll-grid {
+    display:grid; grid-template-columns: repeat(5, 1fr);
+    gap:8px; margin-bottom:10px;
+  }
+  .coll-grid-big {
+    display:grid; grid-template-columns: repeat(2, 1fr);
+    gap:10px;
+  }
+  .coll-card {
+    border-radius:12px; overflow:hidden;
+    position:relative;
+    aspect-ratio:1;
+    background:rgba(255,255,255,.55);
+    box-shadow:0 3px 10px rgba(160,80,140,.15);
+    transition: transform .15s;
+  }
+  .coll-card.unlocked:hover { transform:scale(1.06); }
+  .coll-card img {
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  .coll-card.locked img {
+    filter: brightness(0.08) saturate(0);
+  }
+  .coll-card .coll-label {
+    position:absolute; bottom:0; left:0; right:0;
+    background:rgba(160,80,140,.75);
+    color:#fff; font-size:.55rem; font-weight:900;
+    text-align:center; padding:2px 1px;
+    line-height:1.2;
+  }
+  .coll-card.locked .coll-label { background:rgba(80,40,70,.6); }
+  .coll-card .coll-lock {
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.4rem; pointer-events:none;
+  }
+  .coll-section-label {
+    font-size:.75rem; font-weight:800; color:#c48aaa; margin:8px 0 4px; text-transform:uppercase; letter-spacing:.05em;
+  }
+  .tut-steps { display:flex; flex-direction:column; gap:14px; margin-bottom:22px; text-align:left; }
+  .tut-step { display:flex; align-items:flex-start; gap:12px; }
+  .tut-icon { font-size:1.6rem; line-height:1; flex-shrink:0; margin-top:2px; }
+  .tut-step-text strong { display:block; font-size:.9rem; font-weight:900; color:#a0527a; }
+  .tut-step-text span { font-size:.8rem; color:#c48aaa; font-weight:600; }
+  #tutorial .btn { width:100%; font-size:1rem; padding:12px; margin-top:0; }
 </style>
 </head>
 <body>
-<h1>🐾 Purrfect 2048</h1>
-<p class="sub">Merge tiles to discover the cutest cat!</p>
-<div class="top-bar">
-  <div class="score-box"><div class="lbl">Score</div><div class="val" id="score">0</div></div>
-  <div class="score-box"><div class="lbl">Best</div><div class="val" id="best">0</div></div>
-  <button class="btn" onclick="newGame()">New Game</button>
-  <button class="btn" id="sound-btn" onclick="toggleSound()" title="Toggle sound">🔊</button>
+<canvas id="paw-bg"></canvas>
+<div class="game-wrap">
+<div class="header">
+  <div class="header-title">
+    <h1>🐾 Purrfect</h1>
+    <p class="sub">Merge tiles to find all the cats!</p>
+  </div>
+  <div class="header-right">
+    <div class="scores-row">
+      <div class="score-box"><div class="lbl">Score</div><div class="val" id="score">0</div></div>
+      <div class="score-box"><div class="lbl">Best</div><div class="val" id="best">0</div></div>
+    </div>
+    <div class="btns-row">
+      <button class="btn" onclick="newGame()">New Game</button>
+      <button class="btn" id="sound-btn" onclick="toggleSound()" title="Toggle sound">🔊 Sound</button>
+      <button class="btn" onclick="openCatCollection()" style="background:linear-gradient(135deg,#fbcfe8,#f9a8d4);box-shadow:0 3px 0 #d060a0;" title="Cat Collection">🐱 Cats</button>
+    </div>
+  </div>
 </div>
 <div class="board-wrap">
   <div class="board" id="board">
@@ -165,7 +332,59 @@
     <button class="btn" onclick="newGame()">Try Again 🐾</button>
   </div>
 </div>
-<p class="hint">Arrow keys / WASD &nbsp;·&nbsp; Swipe on mobile</p>
+<p class="hint"><a href="#" onclick="openTutorial(); return false;">🧶 How to play</a></p>
+</div><!-- end game-wrap -->
+
+<div id="cat-collection">
+  <div id="cat-collection-inner">
+    <button id="cat-collection-close" onclick="closeCatCollection()">✕</button>
+    <h2>🐱 Cat Collection</h2>
+    <div class="coll-tagline">Merge tiles to unlock all 12 kitties!</div>
+    <div class="coll-section-label">Tile 2 → 1024</div>
+    <div class="coll-grid" id="coll-grid-main"></div>
+    <div class="coll-section-label">Legendary Cats</div>
+    <div class="coll-grid-big" id="coll-grid-legendary"></div>
+  </div>
+</div>
+
+<div id="tutorial">
+  <div id="tutorial-inner">
+    <button id="tutorial-close" onclick="closeTutorial()">✕</button>
+    <h2>🐾 Purrfect 2048</h2>
+    <div class="tut-tagline">Merge tiles to discover the cutest cat!</div>
+    <div class="tut-steps">
+      <div class="tut-step">
+        <div class="tut-icon">🕹️</div>
+        <div class="tut-step-text">
+          <strong>Swipe or use arrow keys</strong>
+          <span>All tiles slide in that direction — don't let the board get full!</span>
+        </div>
+      </div>
+      <div class="tut-step">
+        <div class="tut-icon">✨</div>
+        <div class="tut-step-text">
+          <strong>Matching tiles merge</strong>
+          <span>Two tiles with the same cat combine into one — and you score paws!</span>
+        </div>
+      </div>
+      <div class="tut-step">
+        <div class="tut-icon">😻</div>
+        <div class="tut-step-text">
+          <strong>Unlock all 12 cats</strong>
+          <span>Each merge reveals a new furry friend. Can you find the cutest cat?</span>
+        </div>
+      </div>
+      <div class="tut-step">
+        <div class="tut-icon">💡</div>
+        <div class="tut-step-text">
+          <strong>Paw-some tip</strong>
+          <span>Keep your highest tile in a corner — it's the cat's meow of strategy!</span>
+        </div>
+      </div>
+    </div>
+    <button class="btn" onclick="closeTutorial()">Let's pounce! 🐱</button>
+  </div>
+</div>
 
 <div id="cat-unlock">
   <div id="cat-unlock-inner">
@@ -230,11 +449,27 @@ const catUnlockData = {
   12: { title:"THE CUTEST CAT! 😻👑",   pun:"You did it — fur real this time!",      msg:"You've found the purrfect kitty! 🏆" },
 };
 
+function getSeenCats() {
+  try {
+    const seen = JSON.parse(localStorage.getItem('cat2048_seen') || '[]');
+    if (!seen.includes(1)) seen.push(1);
+    return seen;
+  } catch { return [1]; }
+}
+function markCatSeen(tileValue) {
+  try {
+    const seen = getSeenCats();
+    if (!seen.includes(tileValue)) { seen.push(tileValue); localStorage.setItem('cat2048_seen', JSON.stringify(seen)); }
+  } catch {}
+}
+
 function showCatUnlock(tileValue) {
   const data = catUnlockData[tileValue];
   if (!data) return;
   const imgSrc = catImages[Math.pow(2, tileValue)];
   if (!imgSrc) return;
+  if (getSeenCats().includes(tileValue)) return;
+  markCatSeen(tileValue);
 
   document.getElementById('cat-unlock-img').src = imgSrc;
   document.getElementById('cat-unlock-title').textContent = data.title;
@@ -343,7 +578,7 @@ function unlockAudio() {
 let soundEnabled = true;
 function toggleSound() {
   soundEnabled = !soundEnabled;
-  document.getElementById('sound-btn').textContent = soundEnabled ? '🔊' : '🔇';
+  document.getElementById('sound-btn').textContent = soundEnabled ? '🔊 Sound' : '🔇 Muted';
 }
 
 function playMeow() {
@@ -426,6 +661,84 @@ function updateScore() {
   document.getElementById('best').textContent  = fmt(bestScore);
 }
 
+function openTutorial() {
+  const el = document.getElementById('tutorial');
+  el.classList.remove('hiding');
+  el.classList.add('show');
+}
+
+function closeTutorial() {
+  const el = document.getElementById('tutorial');
+  el.classList.add('hiding');
+  setTimeout(() => { el.classList.remove('show'); el.classList.remove('hiding'); }, 420);
+}
+
+function isTutorialOpen() {
+  return document.getElementById('tutorial').classList.contains('show');
+}
+
+function isCollectionOpen() {
+  return document.getElementById('cat-collection').classList.contains('show');
+}
+
+function openCatCollection() {
+  renderCatCollection();
+  const el = document.getElementById('cat-collection');
+  el.classList.remove('hiding');
+  el.classList.add('show');
+}
+
+function closeCatCollection() {
+  const el = document.getElementById('cat-collection');
+  el.classList.add('hiding');
+  setTimeout(() => { el.classList.remove('show'); el.classList.remove('hiding'); }, 420);
+}
+
+function renderCatCollection() {
+  const seen = getSeenCats();
+  const catNames = [
+    'Furst One','Claw-some','Meow!','In-cred-ible','Paw-some',
+    'Un-fur-gettable','Fan-cat-stic','Whis-ker Wiz','Purrr-fection','Furr-ocious',
+    'Legendary','THE CUTEST 👑'
+  ];
+  const mainGrid = document.getElementById('coll-grid-main');
+  const bigGrid  = document.getElementById('coll-grid-legendary');
+  mainGrid.innerHTML = '';
+  bigGrid.innerHTML  = '';
+
+  for (let i = 1; i <= 12; i++) {
+    const tileVal = Math.pow(2, i);
+    const imgSrc  = catImages[tileVal];
+    const unlocked = seen.includes(i);
+
+    const card = document.createElement('div');
+    card.className = 'coll-card ' + (unlocked ? 'unlocked' : 'locked');
+
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.alt = catNames[i - 1];
+    card.appendChild(img);
+
+    const label = document.createElement('div');
+    label.className = 'coll-label';
+    label.textContent = unlocked ? catNames[i - 1] : '???';
+    card.appendChild(label);
+
+    if (!unlocked) {
+      const lock = document.createElement('div');
+      lock.className = 'coll-lock';
+      lock.textContent = '🔒';
+      card.appendChild(lock);
+    }
+
+    if (i <= 10) {
+      mainGrid.appendChild(card);
+    } else {
+      bigGrid.appendChild(card);
+    }
+  }
+}
+
 function dismissCatUnlock() {
   const el = document.getElementById('cat-unlock');
   if (!el.classList.contains('show')) return false;
@@ -436,13 +749,15 @@ function dismissCatUnlock() {
 
 document.addEventListener('keydown', e => {
   unlockAudio();
+  if (isTutorialOpen()) { closeTutorial(); return; }
+  if (isCollectionOpen()) { closeCatCollection(); return; }
   if (dismissCatUnlock()) return;
   const m = {ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
   if (m[e.key]) { e.preventDefault(); move(m[e.key]); }
 });
 let tx, ty;
 
-document.addEventListener('touchstart', e => { tx=e.touches[0].clientX; ty=e.touches[0].clientY; e.preventDefault(); unlockAudio(); dismissCatUnlock(); }, {passive:false});
+document.addEventListener('touchstart', e => { tx=e.touches[0].clientX; ty=e.touches[0].clientY; e.preventDefault(); unlockAudio(); if (isTutorialOpen()) { closeTutorial(); return; } if (isCollectionOpen()) { closeCatCollection(); return; } dismissCatUnlock(); }, {passive:false});
 document.addEventListener('touchmove', e => { e.preventDefault(); }, {passive:false});
 document.addEventListener('touchend', e => {
   const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
@@ -451,6 +766,53 @@ document.addEventListener('touchend', e => {
 }, {passive:true});
 
 newGame();
+openTutorial();
+
+// Paw watermark background
+(function() {
+  const canvas = document.getElementById('paw-bg');
+  const ctx = canvas.getContext('2d');
+  const colors = ['#d4a0c8','#a5b4fc','#f9a8d4','#c084fc','#86efac'];
+
+  function drawPaw(ctx, x, y, size, angle, color) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.globalAlpha = 0.10 + Math.random() * 0.08;
+    ctx.fillStyle = color;
+    // Main pad
+    ctx.beginPath();
+    ctx.ellipse(0, size*0.3, size*0.55, size*0.6, 0, 0, Math.PI*2);
+    ctx.fill();
+    // Toe beans
+    const toes = [[-size*.45,-size*.25],[-.15*size,-size*.5],[.15*size,-size*.5],[.45*size,-size*.25]];
+    toes.forEach(([tx,ty]) => {
+      ctx.beginPath();
+      ctx.ellipse(tx, ty, size*.22, size*.26, 0, 0, Math.PI*2);
+      ctx.fill();
+    });
+    ctx.restore();
+  }
+
+  function render() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const count = Math.floor((canvas.width * canvas.height) / 18000);
+    for (let i = 0; i < count; i++) {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height;
+      const size = 18 + Math.random() * 32;
+      const angle = Math.random() * Math.PI * 2;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      drawPaw(ctx, x, y, size, angle, color);
+    }
+  }
+
+  render();
+  window.addEventListener('resize', render);
+})();
+
 </script>
 </body>
 </html>
