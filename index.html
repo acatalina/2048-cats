@@ -31,19 +31,18 @@
   }
   body {
     font-family: 'Nunito', sans-serif;
-    background: #fef6fb;
+    background: linear-gradient(180deg, #fde8d8 0%, #fce4f0 25%, #f0d8f0 50%, #ddd0f0 75%, #d0d8f8 100%);
     min-height: 100vh;
-    background-image:
-      radial-gradient(ellipse at 10% 10%, #fce4f5 0%, transparent 50%),
-      radial-gradient(ellipse at 90% 90%, #e4eeff 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 50%, #fff0fa 0%, transparent 70%);
   }
   h1 { font-size:2rem; font-weight:900; color:#a0527a; letter-spacing:-1px; line-height:1; text-shadow:2px 3px 0 rgba(200,120,180,.18); }
-  .sub { color:#c48aaa; font-size:.78rem; font-weight:700; margin-top:10px; text-align:center; }
+  .sub-row { display:flex; align-items:center; justify-content:space-between; margin-top:8px; gap:8px; }
+  .sub { color:#c48aaa; font-size:.72rem; font-weight:700; margin:0; flex-shrink:0; }
   .header-wrapper {
     position: relative;
-    margin-bottom: 16px;
-    padding-top: 40px;
+    margin-bottom: 12px;
+    padding-top: 32px;
+    width: 390px;
+    max-width: 96vw;
   }
   .header-paw {
     position: absolute;
@@ -53,13 +52,13 @@
     z-index: 2;
     pointer-events: none;
   }
-  .paw-tl { top: 30px; left: -8px; transform: rotate(-30deg); }
-  .paw-tr { top: 30px; right: -8px; transform: rotate(30deg); }
-  .paw-bl { bottom: 52px; left: -8px; transform: rotate(-60deg); }
-  .paw-br { bottom: 52px; right: -8px; transform: rotate(60deg); }
+  .paw-tl { top: 24px; left: -10px; transform: rotate(-30deg); }
+  .paw-tr { top: 24px; right: -10px; transform: rotate(30deg); }
+  .paw-bl { bottom: 40px; left: -10px; transform: rotate(-60deg); }
+  .paw-br { bottom: 40px; right: -10px; transform: rotate(60deg); }
   .header-mascot {
     position: absolute;
-    top: -20px;
+    top: -30px;
     left: 50%;
     transform: translateX(-50%);
     width: 72px;
@@ -116,16 +115,16 @@
   }
 
   .header-title h1 {
-    font-size: 48px;
+    font-size: 40px;
     font-weight: 900;
     margin: 0;
     color: #b44ddb;
     -webkit-text-stroke: 1px rgba(160, 50, 180, 0.3);
     text-shadow:
-      0 2px 0 #c77de0,
-      0 4px 0 #a040c0,
-      0 6px 12px rgba(160, 50, 180, 0.35),
-      0 0 20px rgba(200, 120, 255, 0.2);
+      0 2px 0 #e890c0,
+      0 4px 0 #d06898,
+      0 6px 12px rgba(220, 100, 160, 0.4),
+      0 0 20px rgba(240, 150, 200, 0.25);
     letter-spacing: -1px;
     line-height: 1;
   }
@@ -137,69 +136,42 @@
   }
 
   .score-box {
-    background: linear-gradient(180deg, #f5eaff 0%, #fdf5fb 40%, #f0e1ff 100%);
+    background: rgba(255, 255, 255, 0.7);
     color: #a0527a;
-    border-radius: 14px;
-    padding: 8px 18px 10px;
+    border-radius: 12px;
+    padding: 6px 16px 8px;
     text-align: center;
-    box-shadow:
-      0 4px 12px rgba(160, 80, 140, 0.15),
-      inset 0 -2px 4px rgba(160, 80, 140, 0.1),
-      inset 0 2px 3px rgba(255, 255, 255, 0.8);
-    border: 2px solid rgba(255, 255, 255, 0.6);
-    position: relative;
-    overflow: visible;
-    min-width: 80px;
-  }
-
-  .score-box::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 8px;
-    width: 16px;
-    height: 16px;
-    background: linear-gradient(135deg, #f0e1ff, #e8d4f8);
-    border-radius: 3px 8px 0 0;
-    transform: rotate(-20deg);
-    border: 2px solid rgba(255, 255, 255, 0.6);
-    border-bottom: none;
-    border-right: none;
-    box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.8);
-  }
-  .score-box::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    right: 8px;
-    width: 16px;
-    height: 16px;
-    background: linear-gradient(135deg, #e8d4f8, #f0e1ff);
-    border-radius: 8px 3px 0 0;
-    transform: rotate(20deg);
-    border: 2px solid rgba(255, 255, 255, 0.6);
-    border-bottom: none;
-    border-left: none;
-    box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.8);
-    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(160, 80, 140, 0.12);
+    min-width: 72px;
   }
   .score-box .lbl { font-size:.6rem; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; opacity:.65; }
   .score-box .val { font-size:1.3rem; font-weight:900; line-height:1.3; }
-  .btns-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:10px; }
+  .btns-row { display:flex; gap:5px; }
   .btn {
-    background:linear-gradient(135deg,#f9a8d4,#e879a0); color:#fff; border:none; border-radius:12px; padding:10px 8px;
-    font-family:'Nunito',sans-serif; font-weight:900; font-size:.88rem; cursor:pointer;
-    box-shadow:0 3px 0 #c0507a; transition:transform .1s,box-shadow .1s;
-    width:100%;
+    background:linear-gradient(135deg,#f9a8d4,#e879a0); color:#fff; border:none; border-radius:10px; padding:6px 10px;
+    font-family:'Nunito',sans-serif; font-weight:900; font-size:.72rem; cursor:pointer;
+    box-shadow:0 2px 0 #c0507a; transition:transform .1s,box-shadow .1s;
+    white-space:nowrap;
   }
-  .btn:hover { transform:translateY(-2px); box-shadow:0 5px 0 #c0507a; }
-  .btn:active { transform:translateY(2px); box-shadow:0 1px 0 #c0507a; }
-  #sound-btn { padding:10px 8px; font-size:.88rem; background:linear-gradient(135deg,#c7d2fe,#a5b4fc); box-shadow:0 3px 0 #7080d0; }
-  #sound-btn:hover { box-shadow:0 5px 0 #7080d0; }
+  .btn:hover { transform:translateY(-1px); box-shadow:0 3px 0 #c0507a; }
+  .btn:active { transform:translateY(1px); box-shadow:0 1px 0 #c0507a; }
+  #sound-btn { background:linear-gradient(135deg,#c7d2fe,#a5b4fc); box-shadow:0 2px 0 #7080d0; }
+  #sound-btn:hover { box-shadow:0 3px 0 #7080d0; }
   #sound-btn:active { box-shadow:0 1px 0 #7080d0; }
-  .hint { margin-top:14px; font-size:1.6rem; font-weight:700; text-align:center; }
-  .hint a { color:#c084fc; text-decoration:none; border-bottom:2px dotted #c084fc; transition:color .15s; }
-  .hint a:hover { color:#a0527a; border-color:#a0527a; }
+  .hint { margin-top:14px; font-size:1.4rem; font-weight:900; text-align:center; color:#6b4050; }
+  .hint a { color:#6b4050; text-decoration:none; transition:color .15s; }
+  .hint a:hover { color:#a0527a; }
+
+  .cloud {
+    position: fixed;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.6) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .cloud-1 { width: 300px; height: 150px; bottom: 5%; left: -5%; }
+  .cloud-2 { width: 350px; height: 180px; bottom: 10%; right: -8%; }
+  .cloud-3 { width: 250px; height: 120px; bottom: 20%; left: 20%; }
 
   #tutorial, #cat-unlock {
     transform: none; /* Ensure fixed positioning isn't broken by parent transforms */
@@ -212,19 +184,40 @@
 
   .board-wrap { position:relative; width:390px; max-width:96vw; }
   .board {
-    background:linear-gradient(135deg,#f0d6ef,#ddc6f0); border-radius:22px; padding:9px;
+    background:linear-gradient(135deg,#e8d0e8,#d8c0e0); border-radius:22px; padding:9px;
     display:grid; grid-template-columns:repeat(4,1fr); gap:9px;
     box-shadow:0 8px 30px rgba(160,80,140,.18), inset 0 2px 4px rgba(255,255,255,.6);
+    border: 3px solid rgba(200,170,200,0.5);
     position:relative;
   }
-  .cell-bg { background:rgba(255,255,255,.45); border-radius:13px; aspect-ratio:1; box-shadow:inset 0 2px 5px rgba(160,80,140,.08); }
-  .tiles-layer { position:absolute; top:9px;left:9px;right:9px;bottom:9px; pointer-events:none; }
+  .cell-bg {
+    background: linear-gradient(145deg, #f0d0e8 0%, #e8c0e0 50%, #ddb8d8 100%);
+    border-radius: 13px;
+    aspect-ratio: 1;
+    box-shadow:
+      inset 0 4px 8px rgba(255,255,255,.5),
+      inset 0 -4px 8px rgba(160,80,140,.12),
+      0 2px 4px rgba(160,80,140,.1);
+  }
+  .board-paw {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+  }
+  .tiles-layer { position:absolute; top:9px;left:9px;right:9px;bottom:9px; pointer-events:none; z-index:2; }
   .tile {
     position:absolute; border-radius:13px;
-    background: rgba(255,255,255,.85);
+    background: rgba(255,255,255,.92);
     transition:top .13s ease, left .13s ease;
     overflow:hidden;
-    box-shadow:0 4px 16px rgba(160,80,140,.18), inset 0 1px 3px rgba(255,255,255,.8);
+    box-shadow:
+      0 6px 20px rgba(160,80,140,.25),
+      0 2px 6px rgba(160,80,140,.15),
+      inset 0 1px 3px rgba(255,255,255,.8);
   }
   .tile.legendary { animation: legendGlow 1.2s ease-in-out infinite alternate; }
   @keyframes legendGlow {
@@ -428,6 +421,9 @@
 </head>
 <body>
 <canvas id="paw-bg"></canvas>
+<div class="cloud cloud-1"></div>
+<div class="cloud cloud-2"></div>
+<div class="cloud cloud-3"></div>
 <div class="game-wrap">
 <div class="header-wrapper">
   <img class="header-mascot" src="assets/cute-cat.png" alt="Cat mascot">
@@ -446,11 +442,13 @@
       </div>
     </div>
   </div>
-  <p class="sub">Merge tiles to find all the cats!</p>
-  <div class="btns-row">
-    <button class="btn" onclick="newGame()">New Game</button>
-    <button class="btn" id="sound-btn" onclick="toggleSound()" title="Toggle sound">🔊 Sound</button>
-    <button class="btn" onclick="openCatCollection()" style="background:linear-gradient(135deg,#fbcfe8,#f9a8d4);box-shadow:0 3px 0 #d060a0;" title="Cat Collection">🐱 Cats</button>
+  <div class="sub-row">
+    <p class="sub">Merge tiles to find all the cats!</p>
+    <div class="btns-row">
+      <button class="btn" onclick="newGame()">New Game</button>
+      <button class="btn" id="sound-btn" onclick="toggleSound()" title="Toggle sound">🔔 Sound</button>
+      <button class="btn" onclick="openCatCollection()" style="background:linear-gradient(135deg,#f5d090,#e8b860);box-shadow:0 2px 0 #c09030;color:#7a5020;" title="Cat Collection">🐱 Cats</button>
+    </div>
   </div>
 </div>
 <div class="board-wrap">
@@ -899,6 +897,24 @@ document.addEventListener('touchend', e => {
   if (Math.max(Math.abs(dx),Math.abs(dy)) < 20) return;
   move(Math.abs(dx)>Math.abs(dy) ? (dx>0?'right':'left') : (dy>0?'down':'up'));
 }, {passive:true});
+
+// Place tiny paws at grid intersections
+(function() {
+  const board = document.getElementById('board');
+  const gap = 9, pad = 9, cols = 4;
+  const cell = board.querySelector('.cell-bg');
+  const cellSize = cell.offsetWidth;
+  for (let r = 1; r < cols; r++) {
+    for (let c = 1; c < cols; c++) {
+      const paw = document.createElement('img');
+      paw.src = 'assets/paw.png';
+      paw.className = 'board-paw';
+      paw.style.left = (pad + c * (cellSize + gap) - gap / 2) + 'px';
+      paw.style.top = (pad + r * (cellSize + gap) - gap / 2) + 'px';
+      board.appendChild(paw);
+    }
+  }
+})();
 
 newGame();
 openTutorial();
