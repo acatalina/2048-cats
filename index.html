@@ -36,7 +36,7 @@
   }
   h1 { font-size:2rem; font-weight:900; color:#a0527a; letter-spacing:-1px; line-height:1; text-shadow:2px 3px 0 rgba(200,120,180,.18); }
   .sub-row { display:flex; align-items:center; justify-content:space-between; margin-top:8px; gap:8px; }
-  .sub { color:#c48aaa; font-size:.72rem; font-weight:700; margin:0; flex-shrink:0; }
+  .sub { color:#c48aaa; font-size:.72rem; font-weight:700; margin:0; flex:1; text-align:center; }
   .header-wrapper {
     position: relative;
     margin-bottom: 12px;
@@ -52,10 +52,10 @@
     z-index: 2;
     pointer-events: none;
   }
-  .paw-tl { top: 24px; left: -10px; transform: rotate(-30deg); }
-  .paw-tr { top: 24px; right: -10px; transform: rotate(30deg); }
-  .paw-bl { bottom: 40px; left: -10px; transform: rotate(-60deg); }
-  .paw-br { bottom: 40px; right: -10px; transform: rotate(60deg); }
+  .paw-tl { top: 18px; left: -6px; transform: rotate(-30deg); }
+  .paw-tr { top: 18px; right: -6px; transform: rotate(30deg); }
+  .paw-bl { bottom: 32px; left: -6px; transform: rotate(-60deg); }
+  .paw-br { bottom: 32px; right: -6px; transform: rotate(60deg); }
   .header-mascot {
     position: absolute;
     top: -30px;
@@ -443,11 +443,11 @@
     </div>
   </div>
   <div class="sub-row">
-    <p class="sub">Merge tiles to find all the cats!</p>
+    <p class="sub">Merge tiles to<br>find all the cats!</p>
     <div class="btns-row">
       <button class="btn" onclick="newGame()">New Game</button>
       <button class="btn" id="sound-btn" onclick="toggleSound()" title="Toggle sound">🔔 Sound</button>
-      <button class="btn" onclick="openCatCollection()" style="background:linear-gradient(135deg,#f5d090,#e8b860);box-shadow:0 2px 0 #c09030;color:#7a5020;" title="Cat Collection">🐱 Cats</button>
+      <button class="btn" onclick="openCatCollection()" style="background:linear-gradient(135deg,#f5d090,#e8b860);box-shadow:0 2px 0 #c09030;" title="Cat Collection">🐱 Cats</button>
     </div>
   </div>
 </div>
@@ -890,7 +890,7 @@ document.addEventListener('keydown', e => {
 });
 let tx, ty;
 
-document.addEventListener('touchstart', e => { tx=e.touches[0].clientX; ty=e.touches[0].clientY; e.preventDefault(); unlockAudio(); if (isTutorialOpen()) { closeTutorial(); return; } if (isCollectionOpen()) { closeCatCollection(); return; } dismissCatUnlock(); }, {passive:false});
+document.addEventListener('touchstart', e => { tx=e.touches[0].clientX; ty=e.touches[0].clientY; const tag=e.target.closest('button,a,.btn,.overlay,#tutorial,#cat-collection'); if (!tag) e.preventDefault(); unlockAudio(); if (isTutorialOpen()) { closeTutorial(); return; } if (isCollectionOpen()) { closeCatCollection(); return; } dismissCatUnlock(); }, {passive:false});
 document.addEventListener('touchmove', e => { e.preventDefault(); }, {passive:false});
 document.addEventListener('touchend', e => {
   const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
